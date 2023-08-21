@@ -69,7 +69,7 @@ FROM PortProject.dbo.ActiveBusiness$
 -----------------------------------------------------------------------------------------------------
 ---Analyse the data
 
---- Classified number of business that still operate and create the table to confirm
+--- Which are the top 10 most active businesses
 With Totalbiz AS(
 	SELECT Distinct(NAICS), Count(BUSINESSNAME) AS NumberBusiness
 	FROM [PortProject].[dbo].[ActiveBusiness$] 
@@ -79,10 +79,12 @@ From Totalbiz
 
 SELECT Distinct(NAICS), Count(BUSINESSNAME) AS NumberBusiness
 	FROM [PortProject].[dbo].[ActiveBusiness$] 
+	WHERE NAICS is not NULL
 	GROUP BY NAICS
+	ORDER BY NumberBusiness DESC
 
 
--- determine the percentage of business operated in each NAICS code and identify the top and bottom 10 businesses,
+-- Calculate the portion of businesses in each NAICS code and pinpoint both the highest and lowest 10 performing businesses.
 WITH Totalbizz AS (
     SELECT DISTINCT NAICS, COUNT(BUSINESSNAME) AS NumberBusiness
     FROM [PortProject].[dbo].[ActiveBusiness$]
@@ -119,6 +121,14 @@ SELECT  NAICS, CAST(NumberBusiness * 100.0 / (SELECT SUM(NumberBusiness) FROM To
 FROM Totalbizz 
 ORDER BY PercentageTotal;
 
+-----------------------
+--- Average business life span for each distinct NAICS code, along with its description. 
+
+SELECT NAICS, PRIMARYNAICSDESCRIPTION, AVG(YearinBiz) AS AvgLifeSpan
+FROM [PortProject].[dbo].[ActiveBusiness$]
+WHERE NAICS IS NOT NULL
+GROUP BY NAICS, PRIMARYNAICSDESCRIPTION
+ORDER BY AvgLifeSpan DESC;
 
 -----------------------
 --district that has business operate the most and least
@@ -162,11 +172,16 @@ Set StartYear = SUBSTRING(CONVERT(VARCHAR, LOCATIONSTARTDATE, 120), 1, CHARINDEX
 Update PortProject.dbo.ActiveBusiness$
 Set YearinBiz = 2023-StartYear
 
+-----------------------------------------------------------------------------------------
 
+--Location for map
 
--- map graph on location
--- bar chart on number of business in YearinBiz
--- What types of business operate the most and the least
+SELECT CITY, LOCATION, COUNT(BUSINESSNAME) AS NumberBusiness
+FROM [PortProject].[dbo].[ActiveBusiness$]
+WHERE NAICS IS NOT NULL AND LOCATION IS NOT NULL AND LOCATION != '(0.0, 0.0)'
+GROUP BY LOCATION,CITY
+ORDER BY NumberBusiness DESC;
+
 
 ---------------------------------------------------------------------------------------
 
@@ -177,3 +192,6 @@ From [PortProject].[dbo].[ActiveBusiness$]
 
 Alter Table  [PortProject].[dbo].[ActiveBusiness$]
 Drop Column LOCATIONENDDATE
+
+Alter Table  [PortProject].[dbo].[ActiveBusiness$]
+Drop Column STREETADDRESS, LOCATIONDESCRIPTION,LOCATIONSTARTDATE
