@@ -1,4 +1,5 @@
---Listing of Active Businesses Metadata Updated: June 17, 2023 Listing of all active businesses currently registered with the Office of Finance, United States. 
+--Listing of Active Businesses Metadata Updated: June 17, 2023 Listing of all active businesses in city of Los Angeles currently registered with the Office of Finance, United States. 
+-- From website (https://catalog.data.gov/dataset/listing-of-active-businesses)
 --An "active" business is defined as a registered business whose owner has not notified the Office of Finance of a cease of business operations. Update Interval: Monthly.
 
 SELECT TOP(100)*
