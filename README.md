@@ -4,6 +4,8 @@ Welcome to the "Active US Businesses Analysis" repository! This project focuses 
 with the Office of Finance in the United States. In this project, I aim to understand which types of businesses are most and least active. 
 This helps us learn about different business categories and can be useful for startup entrepreneurs by utilizing SQL to clean, analyze, and visualize the provided data.
 
+[Tableau visualization](https://public.tableau.com/app/profile/marisa.jaikaew/vizzes)
+
 ## Project Overview
 ### Data Source
 
